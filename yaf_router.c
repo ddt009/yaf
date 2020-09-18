@@ -32,6 +32,7 @@
 #include "routes/yaf_route_interface.h"
 #include "routes/yaf_route_static.h"
 #include "routes/yaf_route_map.h"
+#include "routes/yaf_route_rest.h"
 #include "routes/yaf_route_rewrite.h"
 #include "routes/yaf_route_regex.h"
 #include "routes/yaf_route_supervar.h"
@@ -425,6 +426,7 @@ YAF_STARTUP_FUNCTION(router) {
 	YAF_STARTUP(route_supervar);
 	YAF_STARTUP(route_rewrite);
 	YAF_STARTUP(route_regex);
+	YAF_STARTUP(route_rest);
 	YAF_STARTUP(route_map);
 
 	return SUCCESS;

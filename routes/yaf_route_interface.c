@@ -33,6 +33,7 @@
 #include "routes/yaf_route_supervar.h"
 #include "routes/yaf_route_regex.h"
 #include "routes/yaf_route_rewrite.h"
+#include "routes/yaf_route_rest.h"
 #include "routes/yaf_route_map.h"
 
 zend_class_entry *yaf_route_ce;
@@ -119,6 +120,24 @@ int yaf_route_instance(yaf_route_t *route, HashTable *config) /* {{{ */ {
 			return 0;
 		}
 		yaf_route_supervar_instance(route, Z_STR_P(varname));
+	} else if (zend_string_equals_literal_ci(Z_STR_P(pzval), "rest")) {
+		zval *match, *router, *verify;
+		if (UNEXPECTED((match = zend_hash_str_find(config, ZEND_STRL("match"))) == NULL || Z_TYPE_P(match) != IS_STRING))
+		{
+			return 0;
+		}
+
+		if (UNEXPECTED((router = zend_hash_str_find(config, ZEND_STRL("route"))) == NULL || Z_TYPE_P(router) != IS_ARRAY))
+		{
+			return 0;
+		}
+
+		if (((verify = zend_hash_str_find(config, ZEND_STRL("verify"))) == NULL || Z_TYPE_P(verify) != IS_ARRAY))
+		{
+			verify = NULL;
+		}
+
+		yaf_route_rest_instance(route, Z_STR_P(match), router, verify);
 	}
 
 	return 1;
